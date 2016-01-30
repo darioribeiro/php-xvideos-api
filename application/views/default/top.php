@@ -8,14 +8,16 @@
 	<link rel="stylesheet" type="text/css" href="./design/css/style.css">
 
 	<script type="text/javascript" src="<?= PUBLIC_PATH;?>js/jquery/jquery.min.js"></script>
-	
+
 </head>
 <body>
-<?php
+	<?php
 
-$url = "?k=eva+lovia";
+		$url = "?k=sasha+grey";
 
-	$a =  $this->fn->request_to_xvideos($url);
+		$a =  $this->fn->request_to_xvideos($url);
 
-	echo $this->fn->get_random_video($a);
-?>
+		echo json_encode($a);
+
+	?>
+

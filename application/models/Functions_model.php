@@ -23,8 +23,12 @@ class functions_model  extends CI_Model{
 
 		}
 
-		public function request_to_xvideos($url = ""){
-			$ch = curl_init("http://www.xvideos.com/$url");
+		public function request_to_xvideos($url = ""	){
+
+			if($params){
+			}
+
+			$ch = curl_init("http://www.xvideos.com/$url&durf=10min_more");
 
 			curl_setopt($ch, CURLOPT_HEADER, 0);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -32,14 +36,14 @@ class functions_model  extends CI_Model{
 			$html = curl_exec($ch);
 			curl_close($ch);
 			$re = '/(alt|href|src)=("[^"]*")/'; 
-			echo $html = preg_match_all($re, $html, $matches);
+			$html = preg_match_all($re, $html, $matches);
 			$videos = array();
 			foreach ($matches as $key => $value) {
 				foreach ($value as $link) {
 					if(strpos($link,"video") && !strpos($link,'jpg')){
 						$link = str_replace(array('"','href','=','src','video','/0/'), array('','','','','',''), $link);
 						if(strlen($link) > 3 && !empty($link)){
-							
+
 							$videos[] = preg_replace('/[A-Za-z\/.:]/','',substr($link,0,12));
 
 						}
@@ -50,8 +54,11 @@ class functions_model  extends CI_Model{
 			unset($videos[0]);
 			unset($videos[1]);
 
-			return array_values($videos);
+			$final_array = array_values($videos);
 
+
+
+			return $final_array;
 		}
 
 		public function incorporate($link, $options = array()){
@@ -59,7 +66,7 @@ class functions_model  extends CI_Model{
 				$options['frameborder'] = 0;
 				$options['width'] = 100;
 				$options['height'] = 600;
-				$options['scrolling'] = "no";
+				$options['scrolling'] = "yes";
 			}
 
 			$inicial = "<iframe "; 
@@ -76,8 +83,7 @@ class functions_model  extends CI_Model{
 
 		public function get_random_video($videos){
 			@session_start();
-			$this->dump($_SESSION);
-			$random=rand(0,(count($videos)-1));
+			$random=rand(0,(count($videos)-3));
 			if(isset($_SESSION['videos'])){
 
 				if(!in_array($random, @$_SESSION['videos'])){			 
